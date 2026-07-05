@@ -8,6 +8,7 @@ export const addTask = (title) => {
     createdAt: new Date().toISOString(),
   };
   taskList.push(newTask);
+  console.log(`Task added: ${title}`);
 };
 
 export const getTasks = () => {
@@ -20,12 +21,14 @@ export const completeTask = (id) => {
     throw new Error(`Task with id ${id} not found`);
   }
   task.completed = true;
+  console.log(`Task completed: ${task.title}`);
 };
 
 export const deleteTask = (id) => {
-  const index = taskList.findIndex((t) => t.id === id);
-  if (index === -1) {
+  const task = taskList.find((t) => t.id === id);
+  if (!task) {
     throw new Error(`Task with id ${id} not found`);
   }
-  taskList.splice(index, 1);
+  taskList.splice(taskList.indexOf(task), 1);
+  console.log(`Task deleted: ${task.title}`);
 };
