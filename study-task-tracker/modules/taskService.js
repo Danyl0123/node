@@ -2,13 +2,13 @@ export const taskList = [];
 
 export const addTask = (title) => {
   const newTask = {
-    id: `m${taskList.length + 1}`,
+    id: taskList.length + 1,
     title,
     completed: false,
     createdAt: new Date().toISOString(),
   };
   taskList.push(newTask);
-  console.log(`Task added: ${title}`);
+  return newTask;
 };
 
 export const getTasks = () => {

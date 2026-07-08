@@ -31,6 +31,7 @@ export const saveTasks = async (tasks) => {
     tasks.forEach((task) => {
       eventEmitter.emit("taskAdded", task);
     });
+    return tasksWithHash;
   } catch (err) {
     console.error("Error saving tasks:", err);
     throw err;
