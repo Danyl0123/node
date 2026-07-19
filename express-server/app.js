@@ -1,0 +1,53 @@
+import express from "express";
+
+const app = express();
+
+app.get("/", (req, res) => {
+  res.send("Головна сторінка!");
+});
+
+app.get("/about", (req, res) => {
+  res.send("Про нас!");
+});
+
+app.get("/time", (req, res) => {
+  const time = new Date().toLocaleString("uk-UA");
+  res.send(`Поточний час ${time}`);
+});
+
+app.get("/error", (req, res) => {
+  res.status(500).send("Помилка сервера");
+});
+
+app.get("/user/:id", (req, res) => {
+  const userId = req.params.id;
+  res.send(`Користувач з ID: ${userId}`);
+});
+
+app.get("/search", (req, res) => {
+  const searchQuery = req.query.q;
+  if (!searchQuery) {
+    res.status(400).send("Не вказано пошуковий запит.");
+    return;
+  }
+  res.send(`Ви шукали: ${searchQuery}`);
+});
+
+app.get("/users/:id/search", (req, res) => {
+  const userId = req.params.id;
+  const userPosition = req.query.position;
+  if (isNaN(userId) || !userPosition) {
+    res.status(404).send("Невалідний id або невказана позиція корситувача!");
+    return;
+  }
+
+  res.send(`Позиція користувача з id: ${userId} - ${userPosition}`);
+});
+
+app.use((req, res, next) => {
+  res.status(404).send("Сторінку не знайдено");
+});
+
+app.listen(3000, () => {
+  console.log("Сервер запущено!");
+});
