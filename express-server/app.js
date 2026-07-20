@@ -1,5 +1,9 @@
 import express from "express";
-import path from "path";
+// import path from "path";
+// import expressHandlebars from "express-handlebars";
+import hbs from "hbs";
+import students from "./mock/students.js";
+
 const app = express();
 
 app.use((req, res, next) => {
@@ -10,7 +14,27 @@ app.use((req, res, next) => {
 
 app.use(express.json());
 
-app.use(express.static(path.join(import.meta.dirname, "public")));
+// app.use(express.static(path.join(import.meta.dirname, "public")));
+
+app.set("view engine", "hbs");
+hbs.registerHelper("isEqual", function (val1, val2, options) {
+  return val1 === val2 ? options.fn(this) : options.inverse(this);
+});
+
+app.use("/profile", (_, res) => {
+  res.render("profile", {
+    name: "Данило",
+    isOnline: "not truthy condition",
+    role: "Студент курсу Node.js",
+    hobbies: ["хобі 1", "хобі 2", "хобі 3"],
+  });
+});
+
+app.use("/students", (_, res) => {
+  res.render("students", {
+    data: students,
+  });
+});
 
 app.get("/", (req, res) => {
   res.send("Головна сторінка!");
@@ -69,7 +93,7 @@ app.get("/crash", (req, res) => {
 });
 
 app.use((req, res, next) => {
-  res.status(404).send("Сторінку не знайдено");
+  res.render("not-found", { url: req.url });
 });
 
 app.use((err, req, res, next) => {

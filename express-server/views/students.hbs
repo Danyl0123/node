@@ -1,0 +1,27 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <table>
+      <thead>
+        <tr>
+          <td>Імʼя</td>
+          <td>Роль</td>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each data}}
+          <tr>
+            <td>{{this.name}}</td>
+            <td>{{this.level}}</td>
+          </tr>
+        {{/each}}
+      </tbody>
+
+    </table>
+
+  </body>
+</html>
