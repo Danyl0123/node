@@ -1,6 +1,16 @@
 import express from "express";
-
+import path from "path";
 const app = express();
+
+app.use((req, res, next) => {
+  const currentTime = new Date().toLocaleString("uk-UA");
+  console.log(`${req.method} ${req.url} - ${currentTime}`);
+  next();
+});
+
+app.use(express.json());
+
+app.use(express.static(path.join(import.meta.dirname, "public")));
 
 app.get("/", (req, res) => {
   res.send("Головна сторінка!");
@@ -44,8 +54,27 @@ app.get("/users/:id/search", (req, res) => {
   res.send(`Позиція користувача з id: ${userId} - ${userPosition}`);
 });
 
+app.post("/feedback", (req, res) => {
+  const { name } = req.body;
+
+  if (!name) {
+    res.status(400).send("Поле name є обов'язковим");
+    return;
+  }
+  res.send(`Дякуємо, ${name}! Ваш відгук отримано.`);
+});
+
+app.get("/crash", (req, res) => {
+  throw new Error("Тестова помилка");
+});
+
 app.use((req, res, next) => {
   res.status(404).send("Сторінку не знайдено");
+});
+
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).send("Щось пішло не так!.");
 });
 
 app.listen(3000, () => {
