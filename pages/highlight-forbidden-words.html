@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="uk">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Перевірка заборонених слів</title>
+    <style>
+      del {
+        color: #c00;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>Перевірка рядка на заборонені слова</h2>
+
+    <label for="text">Текст:</label><br />
+    <textarea id="text" rows="4" style="width: 100%"></textarea><br /><br />
+
+    <label for="forbidden">Заборонені слова (через кому):</label><br />
+    <input id="forbidden" type="text" style="width: 100%" /><br /><br />
+
+    <button id="check">Перевірити</button>
+
+    <h3>Результат:</h3>
+    <div
+      id="result"
+      style="border: 1px solid #ccc; padding: 8px; min-height: 40px"
+    ></div>
+
+    <script src="highlight-forbidden-words.js"></script>
+    <script>
+      const textInput = document.getElementById("text");
+      const forbiddenInput = document.getElementById("forbidden");
+      const result = document.getElementById("result");
+      const button = document.getElementById("check");
+
+      button.onclick = () => {
+        const text = textInput.value;
+        const forbiddenWords = forbiddenInput.value
+          .split(",")
+          .map((word) => word.trim())
+          .filter(Boolean);
+
+        result.innerHTML = highlightForbiddenWords(text, forbiddenWords);
+      };
+    </script>
+  </body>
+</html>
