@@ -14,4 +14,23 @@ function verifyToken(token) {
   return jwt.verify(token, process.env.JWT_SECRET);
 }
 
-module.exports = { generateToken, verifyToken };
+function generateRefreshToken(payload) {
+  const { id } = payload;
+  if (!id) {
+    throw new Error("Payload must contain id");
+  }
+  return jwt.sign({ id }, process.env.JWT_REFRESH_SECRET, {
+    expiresIn: process.env.JWT_REFRESH_EXPIRES_IN,
+  });
+}
+
+function verifyRefreshToken(token) {
+  return jwt.verify(token, process.env.JWT_REFRESH_SECRET);
+}
+
+module.exports = {
+  generateToken,
+  verifyToken,
+  generateRefreshToken,
+  verifyRefreshToken,
+};
